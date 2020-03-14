@@ -1,0 +1,36 @@
+Host github.com gist.github.com *.githubusercontent.com
+  AddKeysToAgent yes
+{{ if eq .chezmoi.os "darwin" -}}
+  UseKeychain yes
+{{ end -}}
+  IdentityFile ~/.ssh/id_rsa.github
+  ProxyCommand $HOME/.ssh/ssh-proxy -w 2 %h %p
+
+Host cloudlab cloudlab.us.oracle.com
+    Hostname cloudlab.us.oracle.com
+#    RSAAuthentication yes
+    IdentityFile ~/.ssh/id_rsa.cloudlab
+
+Host devcorp corpdev ocna-devcorp-lb.gbucnss.oci.oraclecloud.com
+    Hostname ocna-devcorp-lb.gbucnss.oci.oraclecloud.com
+    User gwowen
+#    RSAAuthentication yes
+    IdentityFile ~/.ssh/id_rsa.devcorp
+    ServerAliveInterval 60
+    ServerAliveCountMax 300
+
+Host pdit den00oix den00oix.us.oracle.com
+    Hostname den00oix.us.oracle.com
+    User gwowen
+    IdentityFile ~/.ssh/id_rsa.den00oix
+
+Host goose.acmepacket.com goose
+    Hostname goose.acmepacket.com
+    User acme
+
+Host bugsftp bugsftp.us.oracle.com bugdb bugs
+    Hostname bugsftp.us.oracle.com
+    User gareth.owen@oracle.com
+    KexAlgorithms diffie-hellman-group14-sha1
+
+

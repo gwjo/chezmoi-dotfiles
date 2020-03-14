@@ -1,3 +1,5 @@
+# vim: set filetype=bash,template
+
 if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
 
 # User specific environment and startup programs
@@ -21,8 +23,30 @@ if type brew &>/dev/null; then
   fi
 fi
 
-# Machine specific customizations
-[ -f .bash_profile.custom ] && source .bash_profile.custom
+{{ if eq .chezmoi.os "darwin" -}}
+##
+## MacOS settings
+##
+
+if brew command command-not-found-init > /dev/null 2>&1; then 
+  eval "$(brew command-not-found-init)"; 
+fi
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+{{ end -}}
+
+{{ if eq .chezmoi.hostname "den00oix" -}}
+##
+## Work PDIT settings
+##
+
+# Proxy Setup
+export http_proxy="http://www-proxy-hqdc.us.oracle.com:80"
+export https_proxy="http://www-proxy-hqdc.us.oracle.com:80"
+export no_proxy=localhost,127.0.0.1,us.oracle.com,oraclecorp.com
+  
+{{ end -}}
 
 # Local settings (not pushed to git)
 [ -f .bash_profile.local ] && source .bash_profile.local

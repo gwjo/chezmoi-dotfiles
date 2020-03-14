@@ -1,11 +1,11 @@
 # .bashrc
+# vim: set ft=bash
 # NOTE: this file invokes .alias (see bottom of this file)
 #
 #
-#echo GAZ -- BASHRC LOADED
 
 ######################################################################
-# Make the first call on the local settings file {{{1
+# Make the first call on the local settings file 
 ######################################################################
 
 [ -f $HOME/.bashrc.local ] && . $HOME/.bashrc.local pre
@@ -188,7 +188,7 @@ fi
 ## Alias
 ##
 
-# vi is good, but vim is better. {{{2
+# vi is good, but vim is better.
 # I'm in the habit of typing 'vi' but if vim is there, I'd prefer that
 if [[ $(type -p vim) ]]; then
     alias vi=vim
@@ -202,9 +202,20 @@ fi
 # Source general alias definitions
 source ~/.alias
 
+########################################
+##
+## MacOS customizations
+##
+{{ if eq .chezmoi.os "darwin" -}}
+
+  # Homebrew "plugins"
+  [[ $(type -p fasd) ]] && eval "$(fasd --init auto)"
+  [[ $(type -p thefuck) ]] && eval "$(thefuck --alias)"
+
+{{ end -}}
 
 ######################################################################
-# Make the last call on the local settings file {{{1
+# Make the last call on the local settings file
 ######################################################################
 
 [ -e $HOME/.bashrc.custom ] && . $HOME/.bashrc.custom post
