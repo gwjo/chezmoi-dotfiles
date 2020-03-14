@@ -1,0 +1,55 @@
+"" =================
+"" Helper functions
+""
+
+
+" Function to source only if file exists {
+function! SourceIfExists(file)
+  if filereadable(expand(a:file))
+    exe 'source' a:file
+  endif
+endfunction
+" }
+
+"" ====================
+"" vim-plug
+""
+call SourceIfExists("~/.vim/plugins.vim")
+
+
+"" ===================
+"" General Settings
+""
+filetype plugin on
+filetype indent on
+
+set nocompatible
+
+"" ===================
+"" Colour
+""
+if v:version > 800
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  colorscheme solarized8
+  set background=dark
+endif
+"let g:solarized_use16=1
+
+"" ===================
+"" Editing behavior
+""
+set tabstop=4                   " a tab is 4 spaces (overloaded for certain file types)
+set softtabstop=4               " when hitting <BS>, pretent like a tab is removed
+set expandtab                   " expand tabs to spaces (overloadable per file type)
+set shiftwidth=4                " auto indent by 4 spaces
+set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
+set backspace=indent,eol,start  " allow backspacing over everything in insert mode
+set autoindent                  " always set autoindenting on
+set copyindent                  " copy the previous indentation on autoindenting
+
+
+set tw=72
+
+

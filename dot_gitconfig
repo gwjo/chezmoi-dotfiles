@@ -1,0 +1,21 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Gareth Owen
+	email = gwjo@users.noreply.github.com
+
+[push]
+	default = simple
+
+[color]
+		ui = auto
+[alias]
+	co = checkout
+	ci = commit
+	st = status
+	br = branch
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	type = cat-file -t
+	dump = cat-file -p
+
+[include]
+	path = ~/.gitconfig.local

@@ -1,0 +1,25 @@
+# .bash_profile
+
+#if [ -f ~/.bashrc ]; then
+#    source ~/.bashrc
+#fi
+
+# Update xterm's title with directory path
+PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
+
+# User specific environment and startup programs
+PATH=$PATH:$HOME/bin
+BASH_ENV=$HOME/.bashrc
+USERNAME=""
+HISTIGNORE="[   ]*:&:bg:fg"
+HISTSIZE=500
+HISTFILESIZE=1000
+
+export USERNAME BASH_ENV PATH HISTIGNORE HISTSIZE HISTFILESIZE INPUTRC STAGE_DIR NP_NPLB_DIR
+
+# Machine specific customizations
+[ -f .bash_login.custom ] && source .bash_login.custom
+
+# Local settings (not pushed to git)
+[ -f .bash_login.local ] && source .bash_login.local
+
