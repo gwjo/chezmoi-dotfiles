@@ -1,5 +1,5 @@
-# .bashrc
-# vim: set ft=bash
+# vim: set filetype=bash
+#
 # NOTE: this file invokes .alias (see bottom of this file)
 #
 #
@@ -9,7 +9,6 @@
 ######################################################################
 
 [ -f $HOME/.bashrc.local ] && . $HOME/.bashrc.local pre
-[ -f $HOME/.bashrc.custom ] && . $HOME/.bashrc.custom pre
 
 
 ############
@@ -218,6 +217,5 @@ source ~/.alias
 # Make the last call on the local settings file
 ######################################################################
 
-[ -e $HOME/.bashrc.custom ] && . $HOME/.bashrc.custom post
 [ -e $HOME/.bashrc.local ] && . $HOME/.bashrc.local post
 
