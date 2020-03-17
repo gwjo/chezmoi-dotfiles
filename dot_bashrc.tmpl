@@ -212,6 +212,14 @@ source ~/.alias
   [[ $(type -p fasd) ]] && eval "$(fasd --init auto)"
   [[ $(type -p thefuck) ]] && eval "$(thefuck --alias)"
 
+{{ else -}}
+#######################################
+##
+## Non-MacOS settings
+
+  # chezmoi completions
+  eval "$(~/bin/chezmoi completion bash)"
+
 {{ end -}}
 
 {{ if eq .chezmoi.hostname "den00oix" -}}
@@ -224,6 +232,7 @@ source ~/.alias
   source scl_source enable rh-git218
 
 {{ end -}}
+
 
 ######################################################################
 # Make the last call on the local settings file
