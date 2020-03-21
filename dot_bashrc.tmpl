@@ -201,17 +201,37 @@ fi
 # Source general alias definitions
 source ~/.alias
 
+{{ if eq .chezmoi.os "darwin" -}}
 ########################################
 ##
 ## MacOS customizations
 ##
-{{ if eq .chezmoi.os "darwin" -}}
 
   # Homebrew "plugins"
   [[ $(type -p fasd) ]] && eval "$(fasd --init auto)"
   [[ $(type -p thefuck) ]] && eval "$(thefuck --alias)"
 
+{{ else -}}
+#######################################
+##
+## Non-MacOS settings
+
+  # chezmoi completions
+  eval "$(~/bin/chezmoi completion bash)"
+
 {{ end -}}
+
+{{ if eq .chezmoi.hostname "den00oix" -}}
+#######################################
+##
+## Work customizations
+##
+
+  # Use a more up to date git
+  source scl_source enable rh-git218
+
+{{ end -}}
+
 
 ######################################################################
 # Make the last call on the local settings file
