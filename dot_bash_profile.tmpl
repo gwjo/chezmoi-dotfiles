@@ -40,6 +40,9 @@ export EDITOR=${VISUAL}
   export MANPATH="/home/gwowen/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
   export INFOPATH="/home/gwowen/.linuxbrew/share/info${INFOPATH+:$INFOPATH}";
 
+  # Stop annoying error caused by brew's pkgconfig
+  export PKG_CONFIG_PATH=/usr/share/pkgconfig:$PKG_CONFIG_PATH
+
 {{ end -}}
 
 ##
