@@ -1,4 +1,4 @@
-# vim: set filetype=bash
+# vim: set ft=bash
 
 if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
 
@@ -10,8 +10,43 @@ export PATH
 export VISUAL=vim
 export EDITOR=${VISUAL}
 
-# brew completions
+
+{{ if eq .chezmoi.os "darwin" -}}
+##
+## MacOS settings
+##
+
+  # iterm2 integration
+  test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+{{ end -}}
+
+{{ if eq .chezmoi.hostname "den00oix" -}}
+##
+## Work PDIT settings
+##
+
+  # Proxy Setup
+  export http_proxy="http://www-proxy-hqdc.us.oracle.com:80"
+  export https_proxy="http://www-proxy-hqdc.us.oracle.com:80"
+  export no_proxy=localhost,127.0.0.1,us.oracle.com,oraclecorp.com
+
+  # Linux Brew settings
+  export HOMEBREW_PREFIX="/home/gwowen/.linuxbrew";
+  export HOMEBREW_CELLAR="/home/gwowen/.linuxbrew/Cellar";
+  export HOMEBREW_REPOSITORY="/home/gwowen/.linuxbrew/Homebrew";
+  export PATH="/home/gwowen/.linuxbrew/bin:/home/gwowen/.linuxbrew/sbin${PATH+:$PATH}";
+  export MANPATH="/home/gwowen/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
+  export INFOPATH="/home/gwowen/.linuxbrew/share/info${INFOPATH+:$INFOPATH}";
+
+{{ end -}}
+
+##
+## Brew specifics
+##
 if type brew &>/dev/null; then
+
+  # completions
   HOMEBREW_PREFIX="$(brew --prefix)"
   if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
     BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d/"
@@ -21,32 +56,12 @@ if type brew &>/dev/null; then
       [[ -r "$COMPLETION" ]] && source "$COMPLETION"
     done
   fi
+
+  # command-not-found
+  if brew command command-not-found-init > /dev/null 2>&1; then 
+    eval "$(brew command-not-found-init)"; 
+  fi
 fi
-
-{{ if eq .chezmoi.os "darwin" -}}
-##
-## MacOS settings
-##
-
-if brew command command-not-found-init > /dev/null 2>&1; then 
-  eval "$(brew command-not-found-init)"; 
-fi
-
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-{{ end -}}
-
-{{ if eq .chezmoi.hostname "den00oix" -}}
-##
-## Work PDIT settings
-##
-
-# Proxy Setup
-export http_proxy="http://www-proxy-hqdc.us.oracle.com:80"
-export https_proxy="http://www-proxy-hqdc.us.oracle.com:80"
-export no_proxy=localhost,127.0.0.1,us.oracle.com,oraclecorp.com
-  
-{{ end -}}
 
 # Local settings (not pushed to git)
 [ -f .bash_profile.local ] && source .bash_profile.local

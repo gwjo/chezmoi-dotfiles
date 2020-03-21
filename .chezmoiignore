@@ -10,3 +10,7 @@
 # MacOS functions
 .functions/work-vpn.bash
 {{ end }}
+
+{{- if ne .chezmoi.os "linux" }}
+.hushlogin
+{{- end }}
