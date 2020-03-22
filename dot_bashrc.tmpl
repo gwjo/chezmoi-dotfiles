@@ -243,6 +243,8 @@ if type -p fasd 2>&1 > /dev/null ; then
   unset fasd_cache
 fi
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 ######################################################################
 # Make the last call on the local settings file
 ######################################################################

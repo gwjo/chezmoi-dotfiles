@@ -1,11 +1,6 @@
 # .bash_profile
 # vim: se ft=sh:
 
-# Prefer config files in .config
-export XDG_CONFIG_HOME=${HOME}/.config
-export XDG_CACHE_HOME=${HOME}/.cache
-export XDG_DATA_HOME=${HOME}/.local/share
-
 if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
 
 # User specific environment and startup programs
@@ -71,6 +66,26 @@ if type brew &>/dev/null; then
     eval "$(brew command-not-found-init)"; 
   fi
 fi
+
+##
+## fzf settings
+##
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+
+# usage: _fzf_setup_completion path|dir|var|alias|host COMMANDS...
+_fzf_setup_completion path ag git
+_fzf_setup_completion dir tree
 
 # Local settings (not pushed to git)
 [ -f .bash_profile.local ] && source .bash_profile.local
