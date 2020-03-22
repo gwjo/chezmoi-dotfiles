@@ -1,16 +1,6 @@
 # Aliases
 # vim: se ft=sh:
 
-# Use git to manage configuration files
-alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-
-
-alias ct='cleartool'
-
-# VNC
-alias vncstart='vncserver -geometry 1920x1017 :1'
-alias vncstop='vncserver -kill :1'
-
 # Stop wireshark filling /tmp
 alias wireshark='wireshark -a filesize:102400' 
 
@@ -24,8 +14,17 @@ alias pf_devcorp='ssh -L 30601:msp-master.cne-installer.oraclecne:30601 gwowen@o
 ## Work aliases (acmeXX)
 ##
 
+# Use git to manage configuration files
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+alias ct='cleartool'
+
 # Prepare a view for a merge
 #   - remove temp files that can mess up the ccreport generation
 alias prepmerge='find . \( -name "*.contrib" -o -name "*.contrib.*" \) -type f -exec /bin/rm -fv \{\} \;'
+
+# VNC
+alias vncstart='vncserver -geometry 1920x1017 :1'
+alias vncstop='vncserver -kill :1'
 
 {{ end }}
