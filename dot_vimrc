@@ -35,7 +35,7 @@ if v:version > 800
   colorscheme solarized8
   set background=dark
 endif
-"let g:solarized_use16=1
+let g:solarized_use16=1
 
 "" ===================
 "" Editing behavior
