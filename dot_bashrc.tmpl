@@ -216,8 +216,10 @@ source ~/.alias
 ##
 ## Non-MacOS settings
 
+{{ if eq .chezmoi.hostname "den00oix" -}}
   # chezmoi completions
   eval "$(~/bin/chezmoi completion bash)"
+{{ end -}}
 
 {{ end -}}
 

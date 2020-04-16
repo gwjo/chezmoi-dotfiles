@@ -22,6 +22,28 @@ export EDITOR=${VISUAL}
 
 {{ end -}}
 
+{{ if eq .chezmoi.os "linux" -}}
+##
+## Linux Brew
+##
+if [[ -d ~/.linuxbrew ]] ; then
+  # Linux Brew settings
+  export HOMEBREW_PREFIX="~/.linuxbrew";
+  export HOMEBREW_CELLAR="~/.linuxbrew/Cellar";
+  export HOMEBREW_REPOSITORY="~/.linuxbrew/Homebrew";
+  export PATH="~/.linuxbrew/bin:~/.linuxbrew/sbin${PATH+:$PATH}";
+  export MANPATH="~/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
+  export INFOPATH="~/.linuxbrew/share/info${INFOPATH+:$INFOPATH}";
+elif [[ -d /home/linuxbrew/.linuxbrew ]] ; then
+  export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
+  export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
+  export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
+  export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin${PATH+:$PATH}";
+  export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
+  export INFOPATH="/home/linuxbrew/.linuxbrew/share/info${INFOPATH+:$INFOPATH}";
+fi
+{{ end -}}
+
 {{ if eq .chezmoi.hostname "den00oix" -}}
 ##
 ## Work PDIT settings
@@ -31,14 +53,6 @@ export EDITOR=${VISUAL}
   export http_proxy="http://www-proxy-hqdc.us.oracle.com:80"
   export https_proxy="http://www-proxy-hqdc.us.oracle.com:80"
   export no_proxy=localhost,127.0.0.1,us.oracle.com,oraclecorp.com
-
-  # Linux Brew settings
-  export HOMEBREW_PREFIX="/home/gwowen/.linuxbrew";
-  export HOMEBREW_CELLAR="/home/gwowen/.linuxbrew/Cellar";
-  export HOMEBREW_REPOSITORY="/home/gwowen/.linuxbrew/Homebrew";
-  export PATH="/home/gwowen/.linuxbrew/bin:/home/gwowen/.linuxbrew/sbin${PATH+:$PATH}";
-  export MANPATH="/home/gwowen/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
-  export INFOPATH="/home/gwowen/.linuxbrew/share/info${INFOPATH+:$INFOPATH}";
 
   # Stop annoying error caused by brew's pkgconfig
   export PKG_CONFIG_PATH=/usr/share/pkgconfig:$PKG_CONFIG_PATH
