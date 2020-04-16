@@ -8,6 +8,9 @@ Host github.com gist.github.com *.githubusercontent.com
 {{- if eq .chezmoi.hostname "den00oix" }}
     ProxyCommand socat - proxy:www-proxy-hqdc.us.oracle.com:%h:%p,proxyport=80
 {{- end }}
+{{- if eq .chezmoi.hostname "GWOWEN-US" }}
+    ProxyCommand socat - proxy:www-proxy-hqdc.us.oracle.com:%h:%p,proxyport=80
+{{- end }}
     ServerAliveInterval 60
 
 Host cloudlab cloudlab.us.oracle.com
