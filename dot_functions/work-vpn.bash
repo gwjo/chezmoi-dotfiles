@@ -2,7 +2,7 @@
 #
 #
 
-work-on()
+work-vpn-on()
 {
     # Proxy settings
     export http_proxy=http://www-proxy-hqdc.us.oracle.com:80
@@ -10,7 +10,7 @@ work-on()
     export no_proxy=localhost,127.0.0.1,us.oracle.com
 }
 
-work-off()
+work-vpn-off()
 {
     unset http_proxy
     unset https_proxy
