@@ -17,8 +17,11 @@ export EDITOR=${VISUAL}
 ## MacOS settings
 ##
 
-  # iterm2 integration
-  test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+# iterm2 integration
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+# add brew sbin
+PATH=/usr/local/sbin:$PATH
 
 {{ end -}}
 
@@ -102,5 +105,5 @@ _fzf_setup_completion path ag git
 _fzf_setup_completion dir tree
 
 # Local settings (not pushed to git)
-[ -f .bash_profile.local ] && source .bash_profile.local
+[ -f ~/.bash_profile.local ] && source ~/.bash_profile.local
 
