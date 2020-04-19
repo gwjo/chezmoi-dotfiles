@@ -52,4 +52,7 @@ set copyindent                  " copy the previous indentation on autoindenting
 
 set tw=72
 
-
+"" =================
+"" FileType settings
+""
+autocmd Filetype gitcommit setlocal spell textwidth=72
