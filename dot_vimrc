@@ -1,15 +1,17 @@
+" Use vim settings, rather then vi settings (much better!)
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
 "" =================
 "" Helper functions
 ""
 
-
-" Function to source only if file exists {
+" Function to source only if file exists
 function! SourceIfExists(file)
   if filereadable(expand(a:file))
     exe 'source' a:file
   endif
 endfunction
-" }
 
 "" ====================
 "" vim-plug
@@ -23,7 +25,6 @@ call SourceIfExists("~/.vim/plugins.vim")
 filetype plugin on
 filetype indent on
 
-set nocompatible
 
 "" ===================
 "" Colour
@@ -48,11 +49,149 @@ set shiftround                  " use multiple of shiftwidth when indenting with
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set autoindent                  " always set autoindenting on
 set copyindent                  " copy the previous indentation on autoindenting
+set relativenumber
+
+"" =================
+"" Searching
+""
+nnoremap / /\v
+vnoremap / /\v
+set ignorecase                     " ignore case when searching
+set smartcase                      "  - unless there is an uppercase
+set gdefault                       " apply substituions globally by default
+set incsearch                      " highlight search results as we go
+set showmatch
+set hlsearch
+
+"" ================
+"" Line wrapping
+""
+set textwidth=79                         " line width before wrap
+set colorcolumn=99                       " long line coloring at 90
 
 
-set tw=72
+"" =================
+"" vim settings
+""
+set hidden                      " hide buffers instead of closing them this
+                                "    means that the current buffer can be put
+                                "    to background without being written; and
+                                "    that marks and undo history are preserved
+set switchbuf=useopen           " reveal already opened files from the
+                                " quickfix window instead of opening new
+                                " buffers
+set viminfo='20,\"80            " read/write a .viminfo file, don't store more
+                                "    than 80 lines of registers
+set wildmenu                    " make tab completion for files/buffers act like bash
+set wildmode=list:full          " show a list when pressing tab and complete
+                                "    first full match
+set wildignore=*.swp,*.bak,*.pyc,*.class
+set title                       " change the terminal's title
+set visualbell                  " don't beep
+set noerrorbells                " don't beep
+set showcmd                     " show (partial) command in the last line of the screen
+                                "    this also shows visual selection info
+set spelllang=en_us             " Use US English 
+set spellfile=~/.vim/spell-en.utf-8.add
+set complete+=kspell            " autocomplete with dictionary words
+"" =================
+"" Backup Settings
+""
+set nobackup                    " do not keep backup files, it's 70's style cluttering
+set nowritebackup               " do not write out changes via backup files
+set undofile                    " keep a persistent undo file
+set noswapfile                  " do not write annoying intermediate swap files
+set backupdir=~/.vim/tmp/backup// " backup files
+set directory=~/.vim/tmp/swap//   " swap files
+set undodir=~/.vim/tmp/undo//      " undo files
+
+" Make those folders automatically if they don't already exist.
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), "p")
+endif
+if !isdirectory(expand(&backupdir))
+    call mkdir(expand(&backupdir), "p")
+endif
+if !isdirectory(expand(&directory))
+    call mkdir(expand(&directory), "p")
+endif
+
+"" =================
+"" Shortcut Mappings
+""
+" Change the mapleader from \ to ,
+let mapleader=","
+let maplocalleader="\\"
+
+" Since I never use the ; key anyway, this is a real optimization for almost
+" all Vim commands, as I don't have to press the Shift key to form chords to
+" enter ex mode.
+nnoremap ; :
+nnoremap <leader>; ;
+
+" Sort paragraphs
+vnoremap <leader>s !sort -f<CR>gv
+nnoremap <leader>s vip!sort -f<CR><Esc>
+
+" Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
+" yanked stack (also, in visual mode)
+nnoremap <silent> <leader>d "_d
+vnoremap <silent> <leader>d "_d
+
+" Clears the search register
+nnoremap <silent> <leader><space> :nohlsearch<CR>
+nnoremap <silent> <leader>/       :nohlsearch<CR>
+
+" Pull word under cursor into LHS of a substitute (for quick search and
+" replace)
+nnoremap <leader>z :%s#\<<C-r>=expand("<cword>")<CR>\>#
+
+" Jump to matching pairs easily, with Tab
+nnoremap <Tab> %
+vnoremap <Tab> %
 
 "" =================
 "" FileType settings
 ""
-autocmd Filetype gitcommit setlocal spell textwidth=72
+if has("autocmd")
+  augroup git_files
+    au!
+    
+    " spell checking and max width
+    au FileType gitcommit setlocal spell textwidth=72
+    " Don't remember the last cursor position when editing commit
+    " messages, always start on line 1
+    au FileType gitcommit call setpos('.', [0, 1, 1, 0])
+  augroup end
+
+  augroup markdown_files
+    au!
+
+    " Spell-check Markdown files
+    au FileType markdown setlocal spell
+  augroup end
+
+  augroup shell_files
+    au!
+
+    " Use 2 space indents
+    au FileType sh setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+endif 
+
+"" ===============
+"" Plugin Settings
+""
+
+"" iamcco/markdown-preview.nvim
+let g:mkdp_auto_close=0      " don't auto close preview
+let g:mkdp_refresh_slow=1    " refresh on save and leaving insert mode
+
+"" npeters/vim-better-whitespace
+let g:strip_whitelines_at_eof=1                " strip extra blank lines as eof
+let g:show_spaces_that_precede_tabs=1          " highlight spaces before tabs
+let g:better_whiespace_operator='<leader>ww'   " use ',ww' to strip whitespace
+
+"" plasticboy/vim-markdown
+let g:vim_markdown_folding_level = 6   "Nothing folded on opening
+
+

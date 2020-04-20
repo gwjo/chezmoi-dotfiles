@@ -12,23 +12,25 @@ if !empty(filter(copy(g:plugs), '!isdirectory(v:val.dir)'))
   autocmd VimEnter * PlugInstall | q
 endif
 
-" Order matters for these two
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
 Plug 'ekalinin/Dockerfile.vim'
+Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+Plug 'inkarkat/vim-ingo-library' | Plug 'inkarkat/vim-SpellCheck'
 Plug 'itspriddle/vim-shellcheck'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'mattn/emmet-vim'
+Plug 'ntpeters/vim-better-whitespace'
 Plug 'psf/black'
 Plug 'scrooloose/nerdtree'
-Plug 'tomtom/tcomment_vim'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
@@ -38,3 +40,4 @@ Plug 'vim-airline/vim-airline'
 
 
 call plug#end()
+
