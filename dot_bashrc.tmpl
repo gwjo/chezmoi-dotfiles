@@ -223,27 +223,17 @@ source ~/.alias
 
 {{ end -}}
 
-{{ if eq .chezmoi.hostname "den00oix" -}}
+{{ if eq .chezmoi.hostname "acme10" -}}
 #######################################
 ##
 ## Work customizations
 ##
 
-  # Use a more up to date git
-  source scl_source enable rh-git218
+# Use a more up to date git
+source scl_source enable rh-git218
 
 {{ end -}}
 
-
-# Init fasd
-if type -p fasd 2>&1 > /dev/null ; then
-  fasd_cache="$HOME/.fasd-init-bash"
-  if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
-    fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
-  fi
-  source "$fasd_cache"
-  unset fasd_cache
-fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 

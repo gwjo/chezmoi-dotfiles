@@ -29,7 +29,15 @@ PATH=/usr/local/sbin:$PATH
 ##
 ## Linux Brew
 ##
-if [[ -d ~/.linuxbrew ]] ; then
+if [[ -d /scratch/${USER}/.linuxbrew ]] ; then
+  # Linux Brew settings
+  export HOMEBREW_PREFIX="/scratch/${USER}/.linuxbrew";
+  export HOMEBREW_CELLAR="/scratch/${USER}/.linuxbrew/Cellar";
+  export HOMEBREW_REPOSITORY="/scratch/${USER}/.linuxbrew/Homebrew";
+  export PATH="/scratch/${USER}/.linuxbrew/bin:/scratch/${USER}/.linuxbrew/sbin${PATH+:$PATH}";
+  export MANPATH="/scratch/${USER}/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
+  export INFOPATH="/scratch/${USER}/.linuxbrew/share/info${INFOPATH+:$INFOPATH}";
+elif [[ -d ~/.linuxbrew ]] ; then
   # Linux Brew settings
   export HOMEBREW_PREFIX="~/.linuxbrew";
   export HOMEBREW_CELLAR="~/.linuxbrew/Cellar";
@@ -83,6 +91,21 @@ if type brew &>/dev/null; then
     eval "$(brew command-not-found-init)"; 
   fi
 fi
+
+
+##
+## fasd setup
+##
+
+if type -p fasd 2>&1 > /dev/null ; then
+  fasd_cache="$HOME/.fasd-init-bash"
+  if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+    fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
+  fi
+  source "$fasd_cache"
+  unset fasd_cache
+fi
+
 
 ##
 ## fzf settings
