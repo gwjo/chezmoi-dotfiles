@@ -68,6 +68,8 @@ fi
   # Stop annoying error caused by brew's pkgconfig
   export PKG_CONFIG_PATH=/usr/share/pkgconfig:$PKG_CONFIG_PATH
 
+  # brew glibc messes up the normal linux path, so add it back in
+  export LD_LIBRARY_PATH="${LD_LIBRARY_PATH+${LD_LIBRARY_PATH}:}/usr/lib64"
 {{ end -}}
 
 ##
