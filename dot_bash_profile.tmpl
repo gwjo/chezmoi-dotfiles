@@ -1,8 +1,6 @@
 # .bash_profile
 # vim: se ft=sh:
 
-if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
-
 # User specific environment and startup programs
 PATH=$PATH:$HOME/.local/bin:$HOME/bin
 export PATH
@@ -95,40 +93,9 @@ if type brew &>/dev/null; then
 fi
 
 
-##
-## fasd setup
-##
-
-if type -p fasd 2>&1 > /dev/null ; then
-  fasd_cache="$HOME/.fasd-init-bash"
-  if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
-    fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
-  fi
-  source "$fasd_cache"
-  unset fasd_cache
-fi
-
-
-##
-## fzf settings
-##
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
-
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
-}
-
-# usage: _fzf_setup_completion path|dir|var|alias|host COMMANDS...
-_fzf_setup_completion path ag git
-_fzf_setup_completion dir tree
-
 # Local settings (not pushed to git)
-[ -f ~/.bash_profile.local ] && source ~/.bash_profile.local
+[[ -f ~/.bash_profile.local ]] && source ~/.bash_profile.local
+
+# Source .bashrc
+[[ -f ~/.bashrc ]] &&  source ~/.bashrc
 

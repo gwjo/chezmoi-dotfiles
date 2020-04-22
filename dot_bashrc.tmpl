@@ -234,8 +234,45 @@ source scl_source enable rh-git218
 
 {{ end -}}
 
+##
+## fasd setup
+##
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if type -p fasd 2>&1 > /dev/null ; then
+  fasd_cache="$HOME/.fasd-init-bash"
+  if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+    fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
+  fi
+  source "$fasd_cache"
+  unset fasd_cache
+fi
+
+
+##
+## fzf settings
+##
+
+if [[ -f ~/.fzf.bash ]] ; then
+  source ~/.fzf.bash
+
+  # Use fd (https://github.com/sharkdp/fd) instead of the default find
+  # command for listing path candidates.
+  # - The first argument to the function ($1) is the base path to start traversal
+  # - See the source code (completion.{bash,zsh}) for the details.
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude ".git" . "$1"
+  }
+
+  # Use fd to generate the list for directory completion
+  _fzf_compgen_dir() {
+    fd --type d --hidden --follow --exclude ".git" . "$1"
+  }
+
+  # usage: _fzf_setup_completion path|dir|var|alias|host COMMANDS...
+  _fzf_setup_completion path ag git
+  _fzf_setup_completion dir tree
+
+fi
 
 ######################################################################
 # Make the last call on the local settings file
