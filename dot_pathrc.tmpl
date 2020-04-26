@@ -1,0 +1,56 @@
+# vim: ft=bash sw=2 ts=2 sts=2
+
+# path manipulation
+
+_prependPath() {
+  paths="$1"
+  toadd="$2"
+  case ":$paths:" in
+    *:"$toadd":*)
+      echo "$paths"
+      ;;
+    *)
+      echo "$toadd${paths:+:$paths}"
+      ;;
+  esac
+}
+
+_appendPath() {
+  paths="$1"
+  toadd="$2"
+  case ":$paths:" in
+    *:"$toadd":*)
+      echo "$paths"
+      ;;
+    *)
+      echo "${paths:+$paths:}$toadd"
+      ;;
+  esac
+}
+
+pathPrepend() { PATH=$(_prependPath "$PATH" "$1"); }
+pathAppend()  { PATH=$(_appendPath "$PATH" "$1"); }
+
+manpathPrepend() { MANPATH=$(_prependPath "$MANPATH" "$1"); }
+manpathAppend()  { MANPATH=$(_appendPath "$MANPATH" "$1"); }
+
+infopathPrepend() { INFOPATH=$(_prependPath "$INFOPATH" "$1"); }
+infopathAppend()  { INFOPATH=$(_appendPath "$INFOPATH" "$1"); }
+
+
+## Brew Settings
+## {{- if eq .chezmoi.os "darwin" }}
+pathPrepend "/usr/local/sbin"     # brew sbin (not present by defualt)
+## {{- else if eq .chezmoi.os "linux" }}
+if [[ -d $HOMEBREW_PREFIX ]] ; then
+  pathPrepend "${HOMEBREW_PREFIX}/bin"
+  pathPrepend "${HOMEBREW_PREFIX}/sbin"
+  manpathPrepend "${HOMEBREW_PREFIX}/man"
+  infopathPrepend "${HOMEBREW_PREFIX}/info"
+fi
+## {{- end }}
+
+## User path
+pathPrepend "$HOME/.local/bin"
+pathPrepend "$HOME/bin"
+

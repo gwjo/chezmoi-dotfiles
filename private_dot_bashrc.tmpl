@@ -1,16 +1,24 @@
-# .bashrc
-# vim: se ft=sh:
+# vim: ft=bash sw=2 ts=2 sts=2
 #
 # NOTE: this file invokes .alias (see bottom of this file)
 #
 #
 
+# Check for an interactive session
+[[ -z "$PS1" ]] && return
+
+
 ######################################################################
-# Make the first call on the local settings file 
+# Make the first call on the local settings file
 ######################################################################
 
-[ -f $HOME/.bashrc.local ] && . $HOME/.bashrc.local pre
+[[ -f ~/.bashrc.local ]] && . ~/.bashrc.local pre
 
+
+# Generic shell settings
+[[ -f ~/.envrc  ]] && source ~/.envrc   # order matters !
+[[ -f ~/.pathrc ]] && source ~/.pathrc
+[[ -f ~/.alias  ]] && source ~/.alias
 
 ############
 ##
@@ -100,7 +108,7 @@ HISTTIMEFORMAT='%F %T '
 
 ############
 ##
-## BETTER DIRECTOY NAVIGATION 
+## BETTER DIRECTOY NAVIGATION
 ##
 
 # Prepend cd to directory names automatically
@@ -121,13 +129,9 @@ shopt -s cdable_vars
 
 
 
-
 #############
 ##
 ## functions
-
-#create ff
-ff () { find . -name ${1} -print ; }
 
 _load_bash_files () {
 
@@ -141,7 +145,7 @@ _load_bash_files () {
         source ${func_file}
       fi
     done
-  fi      
+  fi
 }
 
 
@@ -156,7 +160,7 @@ refresh-completions
 
 ##
 ##  PROMPT
-## 
+##
 if type -f starship &>/dev/null ; then
   eval "$(starship init bash)"
 elif [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]]; then
@@ -168,62 +172,64 @@ elif [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]]; then
 fi
 
 # Need for a xterm & co if we don't make a -ls
-[ -n $DISPLAY ] && {
+[[ -n $DISPLAY ]] && {
         [ -f /etc/profile.d/color_ls.sh ] && source /etc/profile.d/color_ls.sh
          export XAUTHORITY=$HOME/.Xauthority
 }
 
 # Read first /etc/inputrc if the variable is not defined, and after the /etc/inputrc
 # include the ~/.inputrc
-[ -z $INPUTRC ] && export INPUTRC=/etc/inputrc
+[[ -z $INPUTRC ]] && export INPUTRC=/etc/inputrc
 
 # Source global definitions
-if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
+[[ -f /etc/bashrc ]] && source /etc/bashrc
+
+
+
+## {{- if eq .chezmoi.os "darwin" }}
+## MacOS settings
+##
+
+# iterm2 integration
+[[ -e "${HOME}/.iterm2_shell_integration.bash" ]] && source "${HOME}/.iterm2_shell_integration.bash"
+
+## {{- end }}
+
+##
+## Brew specifics
+##
+if type brew &>/dev/null; then
+
+  # completions
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+    BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d/"
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+      [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+    done
+  fi
+
+  # command-not-found
+  if brew command command-not-found-init > /dev/null 2>&1; then
+    eval "$(brew command-not-found-init)";
+  fi
 fi
 
-
-#######################################
 ##
-## Alias
+## chezmoi completions - if manually installed
 ##
+[[ -f ~/bin/chezmoi ]] && eval "$(~/bin/chezmoi completion bash)"
 
-# vi is good, but vim is better.
-# I'm in the habit of typing 'vi' but if vim is there, I'd prefer that
-if [[ $(type -p vim) ]]; then
-    alias vi=vim
-    export EDITOR=$(type -p vim)
-    export VISUAL=$(type -p vim)
-else
-    export EDITOR=$(type -p vi)
-    export VISUAL=$(type -p vi)
-fi
 
-# Source general alias definitions
-source ~/.alias
-
-{{ if eq .chezmoi.os "darwin" -}}
-########################################
 ##
-## MacOS customizations
+## thefuck setup
 ##
+[[ $(type -p thefuck) ]] && eval "$(thefuck --alias)"
 
-  # Homebrew "plugins"
-  [[ $(type -p thefuck) ]] && eval "$(thefuck --alias)"
 
-{{ else -}}
-#######################################
-##
-## Non-MacOS settings
-
-{{ if eq .chezmoi.hostname "den00oix" -}}
-  # chezmoi completions
-  eval "$(~/bin/chezmoi completion bash)"
-{{ end -}}
-
-{{ end -}}
-
-{{ if eq .chezmoi.hostname "acme10" -}}
+# {{- if eq .chezmoi.hostname "acme10" }}
 #######################################
 ##
 ## Work customizations
@@ -232,13 +238,13 @@ source ~/.alias
 # Use a more up to date git
 source scl_source enable rh-git218
 
-{{ end -}}
+# {{- end }}
 
 ##
 ## fasd setup
 ##
 
-if type -p fasd 2>&1 > /dev/null ; then
+if type -p fasd &>/dev/null ; then
   fasd_cache="$HOME/.fasd-init-bash"
   if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
     fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
@@ -274,9 +280,27 @@ if [[ -f ~/.fzf.bash ]] ; then
 
 fi
 
+##
+## pet command
+##
+
+if type -p pet &>/dev/null ; then
+  function prev() {
+    local PREV=$(echo `history | tail -n2 | head -n1` | sed 's/[0-9]* //')
+    sh -c "pet new `printf %q "$PREV"`"
+  }
+
+  function pet-select() {
+    local BUFFER=$(pet search --query "$READLINE_LINE")
+    READLINE_LINE=$BUFFER
+    READLINE_POINT=${#BUFFER}
+  }
+
+  bind -x '"\C-x\C-r": pet-select'
+fi
+
 ######################################################################
 # Make the last call on the local settings file
 ######################################################################
 
-[ -e $HOME/.bashrc.local ] && . $HOME/.bashrc.local post
-
+[[ -e ~/.bashrc.local ]] && . ~/.bashrc.local post
