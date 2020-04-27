@@ -26,16 +26,16 @@ fi
 export CLICOLOR="TRUE"
 ## {{- end }}
 
-
+## {{- if .is.work }}
+## Proxy Setup
+export http_proxy="http://www-proxy-hqdc.us.oracle.com:80"
+export https_proxy="http://www-proxy-hqdc.us.oracle.com:80"
+export no_proxy=localhost,127.0.0.1,us.oracle.com,oraclecorp.com
+## {{- end }}
 
 ## {{- if eq .chezmoi.hostname "den00oix" }}
 ## Work PDIT settings
 ##
-
-# Proxy Setup
-export http_proxy="http://www-proxy-hqdc.us.oracle.com:80"
-export https_proxy="http://www-proxy-hqdc.us.oracle.com:80"
-export no_proxy=localhost,127.0.0.1,us.oracle.com,oraclecorp.com
 
 # Stop annoying error caused by brew's pkgconfig
 export PKG_CONFIG_PATH=/usr/share/pkgconfig:$PKG_CONFIG_PATH
