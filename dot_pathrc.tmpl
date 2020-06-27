@@ -5,6 +5,10 @@
 _prependPath() {
   paths="$1"
   toadd="$2"
+
+  # check path exists
+  [[ ! -d $toadd ]] && { echo "$paths" ; return 0; }
+
   case ":$paths:" in
     *:"$toadd":*)
       echo "$paths"
@@ -18,6 +22,10 @@ _prependPath() {
 _appendPath() {
   paths="$1"
   toadd="$2"
+
+  # check path exists
+  [[ ! -d $toadd ]] && { echo "$paths" ; return 0; }
+
   case ":$paths:" in
     *:"$toadd":*)
       echo "$paths"
