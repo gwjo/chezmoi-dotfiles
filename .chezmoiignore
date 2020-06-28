@@ -1,4 +1,5 @@
 LICENSE
+.editorconfig
 
 {{ if ne .chezmoi.hostname "acme10" }}
 # Work clearcase functions

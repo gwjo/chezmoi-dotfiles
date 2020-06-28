@@ -9,7 +9,7 @@ if type brew &>/dev/null; then
   echo "==> Brew status..."
   brew bundle check --global --no-upgrade --verbose || true
 
-  dumpfile=$( mktemp -d )/Brewfile
+  dumpfile=$(mktemp -d)/Brewfile
   brew bundle dump --file="$dumpfile"
   echo "==> Stuff installed but not in global brewfile..."
   comm -13 <(sort ~/.Brewfile) <(sort $dumpfile)
@@ -23,4 +23,3 @@ echo "==> Unmanaged dotfiles that might need to be added..."
 chezmoi unmanaged | sed "s|$HOME/||g" | grep '^\.'
 
 # vim: ft=bash sw=2 ts=2 sts=2
-
