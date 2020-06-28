@@ -11,23 +11,24 @@
 function ctpdiff() {
   local base
   local mode="pre"
-  local disOpt="-graphical"
+  local disOpt=(-graphical)
 
   OPTIND=1
   while getopts "hx" opt; do
     case $opt in
       h) mode="hijack" ;;
-      x) disOpt="" ;;
+      x) disOpt=() ;;
+      *) echo "unknown option" ; exit ;;
     esac
   done
   ((OPTIND > 1)) && shift $((OPTIND - 1))
 
   case $mode in
-    hijack) base=$(cleartool ls ${1} | grep hijacked | cut -d " " -f 1) ;;
-    pre) disOpt="-pred ${disOpt}" ;;
+    hijack) base=$(cleartool ls "$1" | grep hijacked | cut -d " " -f 1) ;;
+    pre) disOpt=(-pred "${disOpt[@]}") ;;
   esac
 
-  echo "cleartool diff ${disOpt} $base $1"
-  cleartool diff ${disOpt} $base $1
+  echo "cleartool diff ${disOpt[*]} $base $1"
+  cleartool diff "${disOpt[@]}" "$base" "$1"
 
 }

@@ -36,7 +36,7 @@ function sv() {
       echo "Not in a view"
       return 1
     else
-      echo "$(_sv_status_line)"
+      _sv_status_line
       return 0
     fi
   fi
@@ -95,7 +95,7 @@ function sv() {
     else
       local other_view
       other_view=${basedir/_integration/} # strip "_integration"
-      [[ ${basedir} == ${other_view} ]] && other_view=${basedir}_integration
+      [[ ${basedir} == "${other_view}" ]] && other_view=${basedir}_integration
       view=${other_view}
     fi
 
@@ -131,31 +131,36 @@ function sv() {
   [[ -n ${subdir} ]] && view="${view}/${subdir}"
 
   # check that view exists
-  cd ${view} 2>/dev/null
+  cd "${view}" 2>/dev/null || exit 1
 
   # echo the view and activity to the command line
-  echo $(_sv_status_line)
+  _sv_status_line
 
 }
 
 function _sv_status_line() {
 
   # view name
+  # shellcheck disable=SC2155
   local view="$(/usr/local/acme/bin/ccbase 2>/dev/null)"
 
   # current activity + lock status
+  # shellcheck disable=SC2155
   local act="$(cleartool lsact -cact -fmt "%n (%[locked]p)\n" 2>/dev/null)"
   [[ -n $act ]] && act=" --> ${act}"
 
   # now the tricky bit, determine if the integration stream is locked
+  # shellcheck disable=SC2155
   local project="$(cleartool lsproject -cview -short 2>/dev/null)"
   local ibranch="brtype:${project}_integration@/projects"
-  local islocked="$(cleartool lslock -s ${ibranch} 2>/dev/null)"
+  # shellcheck disable=SC2155
+  local islocked="$(cleartool lslock -s "${ibranch}" 2>/dev/null)"
 
   local lockstr=""
   if [[ -n $islocked ]]; then
     # branch is locked, but is it locked for me?
-    local exclusions="$(cleartool lslock ${ibranch} | grep except | grep ${USER})"
+    # shellcheck disable=SC2155
+    local exclusions="$(cleartool lslock "${ibranch}" | grep except | grep "${USER}")"
     lockstr="(locked"
     [[ -n ${exclusions} ]] && lockstr="${lockstr}*"
     lockstr="${lockstr})"

@@ -9,6 +9,7 @@
 #  _sd_cd <SD2 dir> <SD4 dir>
 #
 function _sd_cd() {
+  # shellcheck disable=SC2155
   declare -r CCBASE=$(/usr/local/acme/bin/ccbase)
 
   if [[ -z ${CCBASE} ]]; then
@@ -17,9 +18,9 @@ function _sd_cd() {
   fi
 
   if [[ -d "${CCBASE}/${1}" ]]; then
-    cd "${CCBASE}/${1}"
+    cd "${CCBASE}/${1}" || { echo "Not found"; exit 1; }
   elif [[ -z ${2} && -d "${CCBASE}/${2}" ]]; then
-    cd "${CCBASE}/${2}"
+    cd "${CCBASE}/${2}" || { echo "Not found"; exit 1; }
   else
     echo "Not found"
   fi
@@ -27,17 +28,17 @@ function _sd_cd() {
 
 ## change to an acme directory
 function _acme_cd() {
-  _sd_cd acme/${1} sd_vi/acme/${2}
+  _sd_cd "acme/$1" "sd_vi/acme/$2"
 }
 
 ## change to app directory
 function _app_cd() {
-  _acme_cd bin/${1} apps/${1}
+  _acme_cd "bin/$1" "apps/$1"
 }
 
 ## change to linux directory
 function _linux_cd() {
-  _sd_cd linux/${1}
+  _sd_cd "linux/$1"
 }
 
 ## Alias to jump around the code base

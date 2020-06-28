@@ -12,11 +12,9 @@ if type brew &>/dev/null; then
   dumpfile=$(mktemp -d)/Brewfile
   brew bundle dump --file="$dumpfile"
   echo "==> Stuff installed but not in global brewfile..."
-  comm -13 <(sort ~/.Brewfile) <(sort $dumpfile)
-  # grep -Fxv -f ~/.Brewfile "$dumpfile" || true
+  comm -13 <(sort ~/.Brewfile) <(sort "$dumpfile")
   echo "==> Stuff in global brewfile but not installed..."
-  comm -23 <(sort ~/.Brewfile) <(sort $dumpfile)
-  #grep -Fxv -f "$dumpfile" ~/.Brewfile || true
+  comm -23 <(sort ~/.Brewfile) <(sort "$dumpfile")
 fi
 
 echo "==> Unmanaged dotfiles that might need to be added..."

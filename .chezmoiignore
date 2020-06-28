@@ -1,5 +1,6 @@
 LICENSE
 .editorconfig
+.github
 
 {{ if ne .chezmoi.hostname "acme10" }}
 # Work clearcase functions

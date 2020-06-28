@@ -1,6 +1,6 @@
 _ccdeliver() {
 
-  local cur_word prev_word options extra
+  local cur_word options extra
 
   # COMP_WORDS is an array of words in the current command line.
   # COMP_CWORD is the index of the current word (the one the cursor is
@@ -9,7 +9,7 @@ _ccdeliver() {
   # use it yet.
 
   cur_word="${COMP_WORDS[COMP_CWORD]}"
-  prev_word="${COMP_WORDS[COMP_CWORD - 1]}"
+  # prev_word="${COMP_WORDS[COMP_CWORD - 1]}"
 
   # command options
   options="-complete -resume -cancel -help"
@@ -20,10 +20,10 @@ _ccdeliver() {
   if [[ ${cur_word} == -* ]]; then
 
     if [[ ${COMP_CWORD} -eq 1 ]]; then
-      COMPREPLY=($(compgen -W "${options}" -- ${cur_word}))
+      IFS=" " read -r -a COMPREPLY <<< "$(compgen -W "${options}" -- "${cur_word}")"
       return
     else
-      COMPREPLY=($(compgen -W "${extra}" -- ${cur_word}))
+      IFS=" " read -r -a COMPREPLY <<< "$(compgen -W "${extra}" -- "${cur_word}")"
     fi
   else
     COMPREPLY=()
