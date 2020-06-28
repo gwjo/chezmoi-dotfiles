@@ -20,10 +20,10 @@ _ccdeliver() {
   if [[ ${cur_word} == -* ]]; then
 
     if [[ ${COMP_CWORD} -eq 1 ]]; then
-      IFS=" " read -r -a COMPREPLY <<< "$(compgen -W "${options}" -- "${cur_word}")"
+      IFS=" " read -r -a COMPREPLY <<<"$(compgen -W "${options}" -- "${cur_word}")"
       return
     else
-      IFS=" " read -r -a COMPREPLY <<< "$(compgen -W "${extra}" -- "${cur_word}")"
+      IFS=" " read -r -a COMPREPLY <<<"$(compgen -W "${extra}" -- "${cur_word}")"
     fi
   else
     COMPREPLY=()

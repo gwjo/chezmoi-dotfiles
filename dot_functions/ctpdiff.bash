@@ -18,7 +18,10 @@ function ctpdiff() {
     case $opt in
       h) mode="hijack" ;;
       x) disOpt=() ;;
-      *) echo "unknown option" ; exit ;;
+      *)
+        echo "unknown option"
+        exit
+        ;;
     esac
   done
   ((OPTIND > 1)) && shift $((OPTIND - 1))

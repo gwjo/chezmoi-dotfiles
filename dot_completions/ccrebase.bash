@@ -21,7 +21,7 @@ _ccrebase() {
 
     if [[ ${COMP_CWORD} -eq 1 ]]; then
       # Main actions
-      IFS=" " read -a -r COMPREPLY <<< "$(compgen -W "${options}" -- "${cur_word}")"
+      IFS=" " read -a -r COMPREPLY <<<"$(compgen -W "${options}" -- "${cur_word}")"
       return
     else
       local extra query_ctrl start_ctrl
@@ -32,19 +32,19 @@ _ccrebase() {
 
       case ${COMP_WORDS[1]} in
         -b* | -l* | -rec*)
-          IFS=" " read -r -a COMPREPLY <<< "$(compgen -W "${start_ctrl} ${query_ctrl} ${extra} " -- "${cur_word}")"
+          IFS=" " read -r -a COMPREPLY <<<"$(compgen -W "${start_ctrl} ${query_ctrl} ${extra} " -- "${cur_word}")"
           return
           ;;
         -can* | -comp* | -res*)
           # canel | complete | resume
-          IFS=" " read -r -a COMPREPLY <<< "$(compgen -W "${extra}" -- "${cur_word}")"
+          IFS=" " read -r -a COMPREPLY <<<"$(compgen -W "${extra}" -- "${cur_word}")"
           return
           ;;
         -help)
           return
           ;;
         -mibs)
-          IFS=" " read -r -a COMPREPLY <<< "$(compgen -W "${query_ctrl} ${extra} " -- "${cur_word}")"
+          IFS=" " read -r -a COMPREPLY <<<"$(compgen -W "${query_ctrl} ${extra} " -- "${cur_word}")"
           return
           ;;
         *)

@@ -18,9 +18,15 @@ function _sd_cd() {
   fi
 
   if [[ -d "${CCBASE}/${1}" ]]; then
-    cd "${CCBASE}/${1}" || { echo "Not found"; exit 1; }
+    cd "${CCBASE}/${1}" || {
+      echo "Not found"
+      exit 1
+    }
   elif [[ -z ${2} && -d "${CCBASE}/${2}" ]]; then
-    cd "${CCBASE}/${2}" || { echo "Not found"; exit 1; }
+    cd "${CCBASE}/${2}" || {
+      echo "Not found"
+      exit 1
+    }
   else
     echo "Not found"
   fi
