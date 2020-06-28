@@ -1,21 +1,47 @@
 # This is Git's per-user configuration file.
-[user]
-	name = Gareth Owen
-	email = {{ .git.email }}
+# vim: ft=gitconfig
+
+[color]
+	ui = auto
+
+[core]
+    # Make `git rebase` safer on macOS.
+    # See http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/
+    trustctime = false
+
+    # Speed up commands involving untracked files such as `git status`.
+    # See https://git-scm.com/docs/git-update-index#_untracked_cache
+	untrackedCache = true
+
+[fetch]
+    # Remove any remote-tracking references that no longer exist on the remote.
+    prune = true
+
+[help]
+    # Correct and execute mistyped commands.
+	autocorrect = 1
 
 [push]
 	default = simple
 
-[color]
-		ui = auto
-[alias]
-	co = checkout
-	ci = commit
-	st = status
-	br = branch
-	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
-	type = cat-file -t
-	dump = cat-file -p
+[rebase]
+	# Always check for fixups
+	autosquash = true
+
+	# Create a temporary stash entry before the operation begins.
+	autostash = true
+
+[status]
+    # Enable submodule summary of commits.
+	submoduleSummary = true
+
+[user]
+	name = Gareth Owen
+	email = {{ .git.email }}
 
 [include]
+	# Include aliases
+	path = ~/.gitconfig-alias
+
+	# Include local config, if any
 	path = ~/.gitconfig.local

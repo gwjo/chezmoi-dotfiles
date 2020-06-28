@@ -1,0 +1,75 @@
+# git aliases - sourced from .gitconfig
+# vim: ft=gitconfig
+#
+# Based on https://github.com/renemarc/dotfiles
+#
+
+[alias]
+    # Lists aliases.
+    aliases = config --get-regexp ^alias\\.
+
+    # Amends the currently staged files to the latest commit.
+    amend = commit --amend --reuse-message=HEAD
+
+    # Lists all branches.
+    br = branch
+
+    # Saves changes to the local repo.
+    ci = commit
+
+    # Switches to a branch, but doesn't create it.
+    co = checkout
+
+    # Pretty-prints object's content.
+    dump = cat-file -p
+
+    # Finds branches containing commit.
+    fb = "!f() { git branch -a --contains $1; }; f"
+
+    # Finds commits by source code.
+    fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+    # Finds commits by commit message.
+    fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+    # Find tags containing commit
+    ft = "!f() { git describe --always --contains $1; }; f"
+
+    # Switches to a branch, creating it if necessary.
+    go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+    # Ignores case and skip binary files.
+    grep = grep -Ii
+
+    # Shows short SHA, description, and history graph of last 20 commits.
+    l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
+    # Shows short SHA, description, history graph, time, and author of commits.
+    ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+    # Shows short SHA, date, description, history graph, and author of commits.
+    lo = log --pretty=format:\"%Cred%h%Creset %Cgreen%ad%Creset | %s%C(auto)%d%Creset %C(bold blue)<%an>%Creset\" --graph --date=short
+
+    # Pulls in remote changes for the current repository and all its submodules.
+    p = git pull --recurse-submodules
+
+    # Forces push without overwriting the work of others.
+    pushf = push --force-with-lease
+
+    # Rebases interactively with the given number of latest commits.
+    reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+    # Sets origin remote.
+    set-origin = remote set-url origin
+
+    # Sets upstream remote.
+    set-upstream = remote set-url upstream
+
+    # Views the current working tree status.
+    st = status
+
+    # Shows object type.
+    type = cat-file -t
+
+    # Unstages a file.
+    unstage = reset -q HEAD --
