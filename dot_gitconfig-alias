@@ -4,9 +4,13 @@
 # Based on https://github.com/renemarc/dotfiles
 #
 
+[include]
+    # See
+    # * [GitAlias.com website](http://gitlias.com)
+    # * [GitAlias GitHub](https://github.com/gitalias)
+    path = ~/.gitalias.txt
+
 [alias]
-    # Lists aliases.
-    aliases = config --get-regexp ^alias\\.
 
     # Amends the currently staged files to the latest commit.
     amend = commit --amend --reuse-message=HEAD

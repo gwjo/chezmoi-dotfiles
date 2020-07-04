@@ -22,8 +22,11 @@ elif [[ -d /home/linuxbrew/.linuxbrew ]] ; then
   export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
   export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
 fi
-
+## {{- else if eq .chezmoi.os "darwin" }}
+export CLICOLOR="TRUE"
 ## {{- end }}
+
+
 
 ## {{- if eq .chezmoi.hostname "den00oix" }}
 ## Work PDIT settings
