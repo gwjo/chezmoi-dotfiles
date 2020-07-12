@@ -2,16 +2,20 @@
 # vim: ft=gitconfig
 
 [color]
-	ui = auto
+    ui = auto
 
 [core]
+    # Use delta for showing diffs
+    # See https://github.com/dandavison/delta
+    pager = delta
+
     # Make `git rebase` safer on macOS.
     # See http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/
     trustctime = false
 
     # Speed up commands involving untracked files such as `git status`.
     # See https://git-scm.com/docs/git-update-index#_untracked_cache
-	untrackedCache = true
+    untrackedCache = true
 
 [fetch]
     # Remove any remote-tracking references that no longer exist on the remote.
@@ -19,29 +23,33 @@
 
 [help]
     # Correct and execute mistyped commands.
-	autocorrect = 1
+    autocorrect = 1
+
+[interactive]
+    # delta settings
+    diffFilter = delta --color-only
 
 [push]
-	default = simple
+    default = simple
 
 [rebase]
 	# Always check for fixups
-	autosquash = true
+    autosquash = true
 
 	# Create a temporary stash entry before the operation begins.
-	autostash = true
+    autostash = true
 
 [status]
     # Enable submodule summary of commits.
-	submoduleSummary = true
+    submoduleSummary = true
 
 [user]
-	name = Gareth Owen
-	email = {{ .git.email }}
+    name = Gareth Owen
+    email = {{ .git.email }}
 
 [include]
-	# Include aliases
-	path = ~/.gitconfig-alias
+    # Include aliases
+    path = ~/.gitconfig-alias
 
-	# Include local config, if any
-	path = ~/.gitconfig.local
+    # Include local config, if any
+    path = ~/.gitconfig.local
