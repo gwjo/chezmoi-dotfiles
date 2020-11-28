@@ -50,3 +50,15 @@ Host bugsftp bugsftp.us.oracle.com bugdb bugs
     KexAlgorithms diffie-hellman-group14-sha1
 {{ end }}
 
+{{ if .is.home }}
+Host unifi unifi.gwjo.dev
+    Hostname unifi.gwjo.dev
+    User root
+    IdentityFile ~/.ssh/id_ed25519.homelab
+
+Host k8s k8s.gwjo.dev
+    Hostname k8s.gwjo.dev
+    User gowen
+    IdentityFile ~/.ssh/id_ed25519.homelab
+{{ end }}
+
