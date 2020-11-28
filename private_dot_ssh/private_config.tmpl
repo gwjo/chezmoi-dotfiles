@@ -2,7 +2,11 @@ IgnoreUnknown RSAAuthentication
 
 Host github.com gist.github.com *.githubusercontent.com
     AddKeysToAgent yes
+{{- if stat (joinPath .chezmoi.homedir ".ssh/id_rsa.github") }}
     IdentityFile ~/.ssh/id_rsa.github
+{{- else }}
+    IdentityFile ~/.ssh/id_ed25519.github
+{{- end }}
 {{- if eq .chezmoi.os "darwin" }}
     UseKeychain yes
     ProxyCommand $HOME/.ssh/ssh-proxy -w 2 %h %p
@@ -32,7 +36,7 @@ Host devcorp corpdev ocna-devcorp-lb.gbucnss.oci.oraclecloud.com
     ServerAliveInterval 60
     ServerAliveCountMax 300
 
-{{- if ne .chezmoi.hostname "den00oix" }}
+{{ if ne .chezmoi.hostname "den00oix" }}
 Host pdit den00oix den00oix.us.oracle.com
     Hostname den00oix.us.oracle.com
     User gwowen

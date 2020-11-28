@@ -7,9 +7,11 @@
 
 {{- $home := promptBool "home machine" -}}
 
-[data]
-    is.home = "{{ $home }}"
-    is.work = "{{ not $home }}"
-    git.email = "{{ $git_email }}"
+{{- $work_email := promptString "Work email" -}}
 
+[data]
+    is.home = {{ $home }}
+    is.work = {{ not $home }}
+    git.email = "{{ $git_email }}"
+    work.email = "{{ $work_email }}"
 
