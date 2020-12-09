@@ -5,13 +5,7 @@ export VISUAL=vim
 export EDITOR=${VISUAL}
 
 ## {{- if eq .chezmoi.os "linux" }}
-## Linuxbrew settings
-if [[ -d /scratch/${USER}/.linuxbrew ]] ; then
-  # Work hack - custom path
-  export HOMEBREW_PREFIX="/scratch/${USER}/.linuxbrew";
-  export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
-  export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
-elif [[ -d ~/.linuxbrew ]] ; then
+if [[ -d ~/.linuxbrew ]] ; then
   # Personal install
   export HOMEBREW_PREFIX="~/.linuxbrew";
   export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
@@ -24,24 +18,5 @@ elif [[ -d /home/linuxbrew/.linuxbrew ]] ; then
 fi
 ## {{- else if eq .chezmoi.os "darwin" }}
 export CLICOLOR="TRUE"
-## {{- end }}
-
-## {{- if .is.work }}
-## Proxy Setup
-export http_proxy="http://www-proxy-hqdc.us.oracle.com:80"
-export https_proxy="http://www-proxy-hqdc.us.oracle.com:80"
-export no_proxy=localhost,127.0.0.1,us.oracle.com,oraclecorp.com
-## {{- end }}
-
-## {{- if eq .chezmoi.hostname "den00oix" }}
-## Work PDIT settings
-##
-
-# Stop annoying error caused by brew's pkgconfig
-export PKG_CONFIG_PATH=/usr/share/pkgconfig:$PKG_CONFIG_PATH
-
-# brew glibc messes up the normal linux path, so add it back in
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH+${LD_LIBRARY_PATH}:}/usr/lib64"
-
 ## {{- end }}
 
