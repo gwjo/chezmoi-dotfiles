@@ -11,48 +11,7 @@ Host github.com gist.github.com *.githubusercontent.com
     UseKeychain yes
     ProxyCommand $HOME/.ssh/ssh-proxy -w 2 %h %p
 {{- end }}
-{{- if eq .chezmoi.hostname "den00oix" }}
-    ProxyCommand socat - proxy:www-proxy-hqdc.us.oracle.com:%h:%p,proxyport=80
-{{- end }}
-{{- if eq .chezmoi.hostname "GWOWEN-US" }}
-    ProxyCommand socat - proxy:www-proxy-hqdc.us.oracle.com:%h:%p,proxyport=80
-{{- end }}
     ServerAliveInterval 60
-
-Host cloudlab cloudlab.us.oracle.com
-    Hostname cloudlab.us.oracle.com
-{{- if ne .chezmoi.os "darwin" }}
-    RSAAuthentication yes
-{{- end }}
-    IdentityFile ~/.ssh/id_rsa.cloudlab
-
-Host devcorp corpdev ocna-devcorp-lb.gbucnss.oci.oraclecloud.com
-    Hostname ocna-devcorp-lb.gbucnss.oci.oraclecloud.com
-    User gwowen
-{{- if ne .chezmoi.os "darwin" }}
-    RSAAuthentication yes
-{{- end }}
-    IdentityFile ~/.ssh/id_rsa.devcorp
-    ServerAliveInterval 60
-    ServerAliveCountMax 300
-
-{{ if ne .chezmoi.hostname "den00oix" }}
-Host pdit den00oix den00oix.us.oracle.com
-    Hostname den00oix.us.oracle.com
-    User gwowen
-    IdentityFile ~/.ssh/id_rsa.den00oix
-{{- end }}
-
-Host goose.acmepacket.com goose
-    Hostname goose.acmepacket.com
-    User acme
-
-{{ if ne .chezmoi.os "darwin" }}
-Host bugsftp bugsftp.us.oracle.com bugdb bugs
-    Hostname bugsftp.us.oracle.com
-    User {{ .work.email }}
-    KexAlgorithms diffie-hellman-group14-sha1
-{{- end }}
 
 {{ if .is.home }}
 Host unifi.gwjo.dev pve.gwjo.dev
@@ -62,4 +21,10 @@ Host *.gwjo.dev
     User gowen
     IdentityFile ~/.ssh/id_ed25519.homelab
 {{- end }}
+
+{{ if .is.work }}
+Host bitbucket.ci.motional.com
+    AddKeysToAgent yes
+    IdentityFile ~/.ssh/id_rsa.bitbucket
+{{ end }}
 

@@ -16,7 +16,7 @@
 
 
 # Generic shell settings
-[[ -f ~/.envrc  ]] && source ~/.envrc   # order matters !
+[[ -f ~/.envrc.skip.direnv  ]] && source ~/.envrc.skip.direnv   # order matters !
 [[ -f ~/.pathrc ]] && source ~/.pathrc
 [[ -f ~/.alias  ]] && source ~/.alias
 
@@ -229,17 +229,6 @@ fi
 [[ $(type -p thefuck) ]] && eval "$(thefuck --alias)"
 
 
-# {{- if eq .chezmoi.hostname "acme10" }}
-#######################################
-##
-## Work customizations
-##
-
-# Use a more up to date git
-source scl_source enable rh-git218
-
-# {{- end }}
-
 ##
 ## fasd setup
 ##
@@ -297,6 +286,14 @@ if type -p pet &>/dev/null ; then
   }
 
   bind -x '"\C-x\C-r": pet-select'
+fi
+
+##
+## direnv
+##
+
+if type -p direnv &>/dev/null ; then
+  eval "$(direnv hook bash)"
 fi
 
 ######################################################################

@@ -1,0 +1,27 @@
+# vim: ft=bash sw=2 ts=2 sts=2
+
+# Vim is the editor of choice
+export VISUAL=vim
+export EDITOR=${VISUAL}
+
+## {{- if eq .chezmoi.os "linux" }}
+if [[ -d ~/.linuxbrew ]] ; then
+  # Personal install
+  export HOMEBREW_PREFIX="~/.linuxbrew";
+  export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+  export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
+elif [[ -d /home/linuxbrew/.linuxbrew ]] ; then
+  # System-wide install
+  export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
+  export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+  export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
+fi
+## {{- else if eq .chezmoi.os "darwin" }}
+export CLICOLOR="TRUE"
+## {{- end }}
+
+## {{- if .is.work }}
+## Work settings
+export AWS_PROFILE=233
+
+## {{- end }}
