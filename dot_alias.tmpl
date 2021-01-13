@@ -10,9 +10,15 @@ alias ll='ls -al'
 alias wireshark='wireshark -a filesize:102400'
 
 
-{{ if eq .chezmoi.os "darwin" }}
+#{{ if eq .chezmoi.os "darwin" }}
 
 alias pdit='ssh pdit -t /home/gwowen/.linuxbrew/bin/tmux attach'
 
-{{ end }}
+#{{ end }}
 
+alias resizemonitor='xrandr --output DP-1 --scale 0.7x0.7 --fb 4608x1512 --output DP-2 --pos 2688x432'
+
+# Use snap tmux version if available
+if [[ -x "/snap/bin/tmux-non-dead.tmux" ]] ; then
+  alias tmux='/snap/bin/tmux-non-dead.tmux'
+fi
