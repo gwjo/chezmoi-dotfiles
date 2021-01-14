@@ -13,4 +13,5 @@ LICENSE
 
 {{- if ne .chezmoi.os "linux" }}
 .hushlogin
+private_dot_local/private_share/bash-completion
 {{- end }}
