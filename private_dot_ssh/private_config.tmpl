@@ -14,9 +14,6 @@ Host github.com gist.github.com *.githubusercontent.com
     ServerAliveInterval 60
 
 {{ if .is.home }}
-Host unifi.gwjo.dev pve.gwjo.dev
-    User root
-
 Host *.gwjo.dev
     User gowen
     IdentityFile ~/.ssh/id_ed25519.homelab
