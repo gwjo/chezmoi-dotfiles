@@ -18,3 +18,12 @@ alias pdit='ssh pdit -t /home/gwowen/.linuxbrew/bin/tmux attach'
 
 alias resizemonitor='xrandr --output DP-1 --scale 0.7x0.7 --fb 4608x1512 --output DP-2 --pos 2688x432'
 
+##
+## Docker
+##
+
+# Remove exited containers
+alias drmx='docker rm -v $(docker ps -a -q -f status=exited)'
+
+# Remove dangling images
+alias drmd='docker rmi $(docker images -f "dangling=true" -q)'

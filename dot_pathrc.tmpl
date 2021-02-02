@@ -59,7 +59,8 @@ fi
 ## {{- end }}
 
 ## User path
+pathPrepend "/snap/bin"
+pathPrepend "$HOME/.cargo/bin"
 pathPrepend "$HOME/.local/bin"
 pathPrepend "$HOME/bin"
-pathPrepend "/snap/bin"
 

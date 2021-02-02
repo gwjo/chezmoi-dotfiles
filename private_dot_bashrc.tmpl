@@ -92,7 +92,7 @@ HISTFILESIZE=100000
 HISTCONTROL="erasedups:ignoreboth"
 
 # Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history?( *):fc?( *):clear"
 
 # Use standard ISO 8601 timestamp
 # %F equivalent to %Y-%m-%d
@@ -275,7 +275,7 @@ fi
 
 if type -p pet &>/dev/null ; then
   function prev() {
-    local PREV=$(echo `history | tail -n2 | head -n1` | sed 's/[0-9]* //')
+    local PREV=$(fc -lrn -1)
     sh -c "pet new `printf %q "$PREV"`"
   }
 
