@@ -58,16 +58,16 @@ shopt -s extglob
 ##
 
 # Perform file completion in a case insensitive fashion
-bind "set completion-ignore-case on"
+#bind "set completion-ignore-case on"
 
 # Treat hyphens and underscores as equivalent
-bind "set completion-map-case on"
+#bind "set completion-map-case on"
 
 # Display matches for ambiguous patters at first tab press
-bind "set show-all-if-ambiguous on"
+#bind "set show-all-if-ambiguous on"
 
 # Immediately add a trailing slash when autocompleting symlinks to directories
-bind "set mark-symlinked-directories on"
+#bind "set mark-symlinked-directories on"
 
 ############
 ##
@@ -230,10 +230,12 @@ fi
 
 
 ##
-## fasd setup
+## zoxide or fasd setup
 ##
 
-if type -p fasd &>/dev/null ; then
+if type -p zoxide &>/dev/null; then
+  eval "$(zoxide init bash)"
+elif type -p fasd &>/dev/null ; then
   fasd_cache="$HOME/.fasd-init-bash"
   if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
     fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
@@ -301,3 +303,5 @@ fi
 ######################################################################
 
 [[ -e ~/.bashrc.local ]] && . ~/.bashrc.local post
+
+true # Always return success when sourced

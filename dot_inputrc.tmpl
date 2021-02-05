@@ -1,0 +1,39 @@
+# This file controls the behaviour of line input editing for
+# programs that use the GNU Readline library.  Existing
+# programs include FTP, Bash, and GDB.
+#
+# You can re-read the inputrc file with C-x C-r.
+# Lines beginning with '#' are comments.
+#
+# First, include any system-wide bindings and variable
+# assignments from /etc/inputrc
+$include /etc/inputrc
+
+# use a visible bell if one is available
+set bell-style visible
+
+# colors are good
+set colored-completion-prefix on
+set colored-stats on
+
+#
+# Smart tab completion
+#
+
+# Perform file completion in a case insensitive fashion
+set completion-ignore-case on
+# Treat hyphens and underscores as equivalent
+set completion-map-case on
+# Display matches for ambiguous patters at first tab press
+set show-all-if-ambiguous on
+# Immediately add a trailing slash when autocompleting symlinks to directories
+set mark-symlinked-directories on
+
+#
+# BASH settings
+#
+$if Bash
+  # Insert completion on typing a space
+  Space: magic-space
+$endif
+
