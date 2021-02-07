@@ -82,7 +82,10 @@ shopt -s histappend
 shopt -s cmdhist
 
 # Record each line as it gets issued
-PROMPT_COMMAND='history -a'
+if [[ ${__gwjo_prompt_added_} != "defined" ]] ; then
+  __gwjo_prompt_added_=defined
+  PROMPT_COMMAND='history -a'
+fi
 
 # Huge history. Doesn't appear to slow things down, so why not?
 HISTSIZE=500000
@@ -184,17 +187,6 @@ fi
 # Source global definitions
 [[ -f /etc/bashrc ]] && source /etc/bashrc
 
-
-
-## {{- if eq .chezmoi.os "darwin" }}
-## MacOS settings
-##
-
-# iterm2 integration
-[[ -e "${HOME}/.iterm2_shell_integration.bash" ]] && source "${HOME}/.iterm2_shell_integration.bash"
-
-## {{- end }}
-
 ##
 ## Brew specifics
 ##
@@ -233,15 +225,18 @@ fi
 ## zoxide or fasd setup
 ##
 
-if type -p zoxide &>/dev/null; then
-  eval "$(zoxide init bash)"
-elif type -p fasd &>/dev/null ; then
-  fasd_cache="$HOME/.fasd-init-bash"
-  if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
-    fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
+if [[ ${__gwjo_zoxide_added} != "defined" ]] ; then
+  #__gwjo_zoxide_added=defined
+  if type -p zoxide &>/dev/null; then
+    eval "$(zoxide init bash)"
+  elif type -p fasd &>/dev/null ; then
+    fasd_cache="$HOME/.fasd-init-bash"
+    if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+      fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
+    fi
+    source "$fasd_cache"
+    unset fasd_cache
   fi
-  source "$fasd_cache"
-  unset fasd_cache
 fi
 
 
@@ -297,6 +292,17 @@ fi
 if type -p direnv &>/dev/null ; then
   eval "$(direnv hook bash)"
 fi
+
+## {{- if eq .chezmoi.os "darwin" }}
+## Install iterm2 integration on MacOS
+##
+## Must be AFTER all changes to PROMPT_COMMAND
+##
+
+# iterm2 integration
+[[ -e "${HOME}/.iterm2_shell_integration.bash" ]] && source "${HOME}/.iterm2_shell_integration.bash"
+
+## {{- end }}
 
 ######################################################################
 # Make the last call on the local settings file
