@@ -192,6 +192,6 @@ let g:show_spaces_that_precede_tabs=1          " highlight spaces before tabs
 let g:better_whiespace_operator='<leader>ww'   " use ',ww' to strip whitespace
 
 "" plasticboy/vim-markdown
-let g:vim_markdown_folding_level = 6   "Nothing folded on opening
+let g:vim_markdown_folding_disabled = 1   "Disable folding
 
 
