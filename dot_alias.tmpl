@@ -1,20 +1,30 @@
 # Aliases
 # vim: se ft=sh:
 
-alias ls='ls -F'
-alias l='ls -l'
-alias la='ls -a'
-alias ll='ls -al'
 
 # Stop wireshark filling /tmp
 alias wireshark='wireshark -a filesize:102400'
 
+if ls --color=auto &>/dev/null ; then
+  # Colorful LS
+  alias ls='ls --color=auto -F'
+  eval $(dircolors -b "$HOME/.local/share/LS_COLORS")
+elif gls --color=auto &>/dev/null ; then
+  # use brew coreutils if present
+  alias ls='gls --color=auto -F'
+  eval $(gdircolors -b "$HOME/.local/share/LS_COLORS")
+elif ls -G l &>/dev/null ; then
+  # BSD ls
+  alias ls='ls -GF'
+else
+  # Hmm... no color
+  alias ls='ls -F'
+fi
+# These use "ls" alias above
+alias l='ls --color=auto -l'
+alias la='ls --color=auto -a'
+alias ll='ls --color=auto -al'
 
-#{{ if eq .chezmoi.os "darwin" }}
-
-alias pdit='ssh pdit -t /home/gwowen/.linuxbrew/bin/tmux attach'
-
-#{{ end }}
 
 alias resizemonitor='xrandr --output DP-1 --scale 0.7x0.7 --fb 4608x1512 --output DP-2 --pos 2688x432'
 
