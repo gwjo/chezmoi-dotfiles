@@ -294,6 +294,17 @@ if type -p direnv &>/dev/null ; then
 fi
 
 ## {{- if eq .chezmoi.os "darwin" }}
+
+##
+## Virtual Env
+##
+if type -p /usr/local/bin/virtualenvwrapper.sh &>/dev/null ; then
+  export WORKON_HOME=$HOME/.local/virtualenvs
+  export PROJECT_HOME=$HOME/local/repos
+  export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+  source /usr/local/bin/virtualenvwrapper.sh
+fi
+
 ## Install iterm2 integration on MacOS
 ##
 ## Must be AFTER all changes to PROMPT_COMMAND
