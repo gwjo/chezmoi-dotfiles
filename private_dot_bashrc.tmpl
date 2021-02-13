@@ -174,7 +174,6 @@ if command -v brew &>/dev/null; then
   # completions
   HOMEBREW_PREFIX="$(brew --prefix)"
   if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-    BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d/"
     source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
   else
     for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
@@ -240,7 +239,7 @@ if [[ -f ~/.fzf.bash ]] ; then
   }
 
   # usage: _fzf_setup_completion path|dir|var|alias|host COMMANDS...
-  _fzf_setup_completion path ag git
+  _fzf_setup_completion path git rg
   _fzf_setup_completion dir tree
 
 fi
