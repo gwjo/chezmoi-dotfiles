@@ -1,15 +1,4 @@
 LICENSE
-.editorconfig
-.github
-
-{{ if ne .chezmoi.hostname "acme10" }}
-# Work clearcase functions
-.functions/ctpdiff.bash
-.functions/sv.bash
-.functions/view-nav.bash
-.completions/cc*
-{{ end }}
-
 
 {{- if ne .chezmoi.os "linux" }}
 .hushlogin

@@ -39,10 +39,6 @@ shopt -s checkwinsize
 # Automatically trim long paths in the prompt
 PROMPT_DIRTRIM=2
 
-# Enable history expansion with space
-# eg typing !!<space> will replace !! with you last command
-#bind Space:magic-space
-
 # Turn on recursive globbing (enables ** to recurse all directories)
 shopt -s globstar 2> /dev/null
 
@@ -52,28 +48,11 @@ shopt -s nocaseglob;
 # Turn on extended globing
 shopt -s extglob
 
-############
-##
-## SMARTER TAB-COMPLETION (readline bindings)
-##
-
-# Perform file completion in a case insensitive fashion
-#bind "set completion-ignore-case on"
-
-# Treat hyphens and underscores as equivalent
-#bind "set completion-map-case on"
-
-# Display matches for ambiguous patters at first tab press
-#bind "set show-all-if-ambiguous on"
-
-# Immediately add a trailing slash when autocompleting symlinks to directories
-#bind "set mark-symlinked-directories on"
 
 ############
 ##
 ## SANE HISTORY DEFAULTS
 ##
-
 
 # Append to the history file
 shopt -s histappend
@@ -176,8 +155,8 @@ fi
 
 # Need for a xterm & co if we don't make a -ls
 [[ -n $DISPLAY ]] && {
-        [ -f /etc/profile.d/color_ls.sh ] && source /etc/profile.d/color_ls.sh
-         export XAUTHORITY=$HOME/.Xauthority
+  [ -f /etc/profile.d/color_ls.sh ] && source /etc/profile.d/color_ls.sh
+  export XAUTHORITY=$HOME/.Xauthority
 }
 
 # Read first /etc/inputrc if the variable is not defined, and after the /etc/inputrc
@@ -226,7 +205,7 @@ fi
 ##
 
 if [[ ${__gwjo_zoxide_added} != "defined" ]] ; then
-  #__gwjo_zoxide_added=defined
+  __gwjo_zoxide_added=defined
   if command -v zoxide &>/dev/null; then
     eval "$(zoxide init bash)"
   elif command -v fasd &>/dev/null ; then
