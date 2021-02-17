@@ -164,7 +164,7 @@ refresh-completions
 ##
 ##  PROMPT
 ##
-if type -f starship &>/dev/null ; then
+if command -v starship &>/dev/null ; then
   eval "$(starship init bash)"
 elif [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]]; then
   GIT_PS1_SHOWDIRTYSTATE=1
@@ -190,7 +190,7 @@ fi
 ##
 ## Brew specifics
 ##
-if type brew &>/dev/null; then
+if command -v brew &>/dev/null; then
 
   # completions
   HOMEBREW_PREFIX="$(brew --prefix)"
@@ -218,7 +218,7 @@ fi
 ##
 ## thefuck setup
 ##
-[[ $(type -p thefuck) ]] && eval "$(thefuck --alias)"
+[[ $(command -v thefuck) ]] && eval "$(thefuck --alias)"
 
 
 ##
@@ -227,9 +227,9 @@ fi
 
 if [[ ${__gwjo_zoxide_added} != "defined" ]] ; then
   #__gwjo_zoxide_added=defined
-  if type -p zoxide &>/dev/null; then
+  if command -v zoxide &>/dev/null; then
     eval "$(zoxide init bash)"
-  elif type -p fasd &>/dev/null ; then
+  elif command -v fasd &>/dev/null ; then
     fasd_cache="$HOME/.fasd-init-bash"
     if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
       fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
@@ -270,7 +270,7 @@ fi
 ## pet command
 ##
 
-if type -p pet &>/dev/null ; then
+if command -v pet &>/dev/null ; then
   function prev() {
     local PREV=$(fc -lrn -1)
     sh -c "pet new `printf %q "$PREV"`"
@@ -289,21 +289,26 @@ fi
 ## direnv
 ##
 
-if type -p direnv &>/dev/null ; then
+if command -v direnv &>/dev/null ; then
   eval "$(direnv hook bash)"
 fi
-
-## {{- if eq .chezmoi.os "darwin" }}
 
 ##
 ## Virtual Env
 ##
-if type -p /usr/local/bin/virtualenvwrapper.sh &>/dev/null ; then
+
+if command -v virtualenvwrapper.sh &>/dev/null ; then
   export WORKON_HOME=$HOME/.local/virtualenvs
-  export PROJECT_HOME=$HOME/local/repos
-  export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-  source /usr/local/bin/virtualenvwrapper.sh
+  if [[ -d $HOME/local/repos ]] ; then
+    export PROJECT_HOME=$HOME/local/repos
+  else
+    export PROJECT_HOME=$HOME/repos
+  fi
+  export VIRTUALENVWRAPPER_PYTHON=$(command -v python3)
+  source $(command -v virtualenvwrapper.sh)
 fi
+
+## {{- if eq .chezmoi.os "darwin" }}
 
 ## Install iterm2 integration on MacOS
 ##
