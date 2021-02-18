@@ -2,7 +2,7 @@ LICENSE
 
 {{ if ne .chezmoi.os "linux" }}
 .hushlogin
-.local/share/bash-completion/*
+.local/share/bash-completion
 bin/update-nerd-fonts.sh
 {{ end }}
 
