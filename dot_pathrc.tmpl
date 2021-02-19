@@ -3,64 +3,61 @@
 # path manipulation
 
 _prependPath() {
-  paths="$1"
-  toadd="$2"
+  local path=$1
+  local paths=${!1}
+  local toadd=$2
 
   # check path exists
-  [[ ! -d $toadd ]] && { echo "$paths" ; return 0; }
+  [[ ! -d $toadd ]] && return 0
 
   case ":$paths:" in
     *:"$toadd":*)
-      echo "$paths"
       ;;
     *)
-      echo "$toadd${paths:+:$paths}"
+      export $path="$toadd${paths:+:$paths}"
       ;;
   esac
 }
 
 _appendPath() {
-  paths="$1"
-  toadd="$2"
+  local path=$1
+  local paths=${!1}
+  local toadd=$2
 
   # check path exists
-  [[ ! -d $toadd ]] && { echo "$paths" ; return 0; }
+  [[ ! -d $toadd ]] && return 0
 
   case ":$paths:" in
     *:"$toadd":*)
-      echo "$paths"
       ;;
     *)
-      echo "${paths:+$paths:}$toadd"
+      export $path="${paths:+$paths:}$toadd"
       ;;
   esac
 }
 
-pathPrepend() { PATH=$(_prependPath "$PATH" "$1"); }
-pathAppend()  { PATH=$(_appendPath "$PATH" "$1"); }
-
-manpathPrepend() { MANPATH=$(_prependPath "$MANPATH" "$1"); }
-manpathAppend()  { MANPATH=$(_appendPath "$MANPATH" "$1"); }
-
-infopathPrepend() { INFOPATH=$(_prependPath "$INFOPATH" "$1"); }
-infopathAppend()  { INFOPATH=$(_appendPath "$INFOPATH" "$1"); }
-
-
 ## Brew Settings
 ## {{- if eq .chezmoi.os "darwin" }}
-pathPrepend "/usr/local/sbin"     # brew sbin (not present by defualt)
+_prependPath PATH "/usr/local/sbin"     # brew sbin (not present by defualt)
 ## {{- else if eq .chezmoi.os "linux" }}
 if [[ -d $HOMEBREW_PREFIX ]] ; then
-  pathPrepend "${HOMEBREW_PREFIX}/bin"
-  pathPrepend "${HOMEBREW_PREFIX}/sbin"
-  manpathPrepend "${HOMEBREW_PREFIX}/man"
-  infopathPrepend "${HOMEBREW_PREFIX}/info"
+  _prependPath PATH "${HOMEBREW_PREFIX}/bin"
+  _prependPath PATH "${HOMEBREW_PREFIX}/sbin"
+  _prependPath MANPATH "${HOMEBREW_PREFIX}/man"
+  _prependPath INFOPATH "${HOMEBREW_PREFIX}/info"
 fi
 ## {{- end }}
 
 ## User path
-pathPrepend "/snap/bin"
-pathPrepend "$HOME/.cargo/bin"
-pathPrepend "$HOME/.local/bin"
-pathPrepend "$HOME/bin"
+## {{- if eq .chezmoi.os "linux" }}
+_prependPath PATH "/snap/bin"
+## {{- end }}
+_prependPath PATH "$HOME/.cargo/bin"
+_prependPath PATH "$HOME/.local/bin"
+_prependPath PATH "$HOME/bin"
+
+
+# Get rid of the temporary functions
+unset -f _prependPath
+unset -f _appendPath
 

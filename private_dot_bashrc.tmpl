@@ -7,6 +7,16 @@
 # Check for an interactive session
 [[ -z "$PS1" ]] && return
 
+######################################################################
+####
+#### TIMING TESTING
+####
+# exec 3>&2 2> >( tee /tmp/sample-$$.log |
+#                  sed -u 's/^.*$/now/' |
+#                  gdate -f - +%s.%N >/tmp/sample-$$.tim)
+#set -x
+####
+######################################################################
 
 ######################################################################
 # Make the first call on the local settings file
@@ -172,18 +182,13 @@ fi
 if command -v brew &>/dev/null; then
 
   # completions
-  HOMEBREW_PREFIX="$(brew --prefix)"
+  HOMEBREW_PREFIX=${HOMEBREW_PREFIX:-/usr/local}   # hard code this because `brew --prefix` is really slow
   if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
     source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
   else
     for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
       [[ -r "$COMPLETION" ]] && source "$COMPLETION"
     done
-  fi
-
-  # command-not-found
-  if brew command command-not-found-init > /dev/null 2>&1; then
-    eval "$(brew command-not-found-init)";
   fi
 fi
 
@@ -303,5 +308,16 @@ fi
 ######################################################################
 
 [[ -e ~/.bashrc.local ]] && . ~/.bashrc.local post
+
+
+######################################################################
+####
+#### TIMING TESTING
+####
+# set +x
+# exec 2>&3 3>&-
+####
+######################################################################
+
 
 true # Always return success when sourced
