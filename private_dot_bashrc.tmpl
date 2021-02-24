@@ -176,6 +176,14 @@ fi
 # Source global definitions
 [[ -f /etc/bashrc ]] && source /etc/bashrc
 
+# Completions
+#   Ubuntu uses /etc/profile.d/ to enable completions, but this only works for
+#   login shell, so need to manually source here to enable for interactive
+#   shells
+[[ -f /usr/share/bash-completion/bash_completion && -z $BASH_COMPLETION_VERSINFO ]] && {
+  source /usr/share/bash-completion/bash_completion
+}
+
 ##
 ## Brew specifics
 ##
