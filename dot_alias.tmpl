@@ -50,3 +50,16 @@ alias drmx='docker rm -v $(docker ps -a -q -f status=exited)'
 
 # Remove dangling images
 alias drmd='docker rmi $(docker images -f "dangling=true" -q)'
+
+
+##
+## Linux
+##
+
+## {{- if eq .chezmoi.os "linux" }}
+
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+
+## {{- end }}
+
