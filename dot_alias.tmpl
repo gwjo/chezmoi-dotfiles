@@ -1,34 +1,41 @@
 # Aliases
-# vim: se ft=sh:
+# vim: se ft=bash:
 
 
 # Stop wireshark filling /tmp
 alias wireshark='wireshark -a filesize:102400'
 
-if \ls --color=auto &>/dev/null ; then
-  # Colorful LS
-  alias ls='ls --color=auto -F'
-  eval $(dircolors -b "$HOME/.local/share/LS_COLORS")
-elif \gls --color=auto &>/dev/null ; then
-  # use brew coreutils if present
-  alias ls='gls --color=auto -F'
-  eval $(gdircolors -b "$HOME/.local/share/LS_COLORS")
-elif ls -G l &>/dev/null ; then
-  # BSD ls
-  alias ls='ls -GF'
+if command -v exa &>/dev/null ; then
+  # use exa if installed
+  alias ls='exa --classify --group-directories-first'
+  alias la='exa --classify --group-directories-first --all'
+  alias l='EXA_GRID_ROWS=5 exa --classify --group-directories-first --long --git --grid'
+  alias ll='EXA_GRID_ROWS=5 exa --classify --group-directories-first --all --long --git --grid'
+  alias lls='EXA_GRID_ROWS=5 exa --classify --group-directories-first --all --long --grid --sort=size'
+  alias llt='EXA_GRID_ROWS=5 exa --classify --group-directories-first --all --long --grid --sort=modified'
 else
-  # Hmm... no color
-  alias ls='ls -F'
+  if \ls --color=auto &>/dev/null ; then
+    # Colorful LS
+    alias ls='ls --color=auto -Fh'
+    eval $(dircolors -b "$HOME/.local/share/LS_COLORS")
+  elif \gls --color=auto &>/dev/null ; then
+    # use brew coreutils if present
+    alias ls='gls --color=auto -Fh'
+    eval $(gdircolors -b "$HOME/.local/share/LS_COLORS")
+  elif ls -G l &>/dev/null ; then
+    # BSD ls
+    alias ls='ls -GFh'
+  else
+    # Hmm... no color
+    alias ls='ls -Fh'
+  fi
+  # These use "ls" alias above
+  alias l='ls -l'
+  alias la='ls -a'
+  alias ll='ls -al'
+  alias lls='ls -alrS'
+  alias llt='ls -alrt'
 fi
-# These use "ls" alias above
-alias l='ls -lh'
-alias la='ls -a'
-alias ll='ls -alh'
-alias lls='ls -lhrS'
-alias llsa='ls -alhrS'
-alias llt='ls -lhrt'
-alias llta='ls -alhrt'
-
 
 alias resizemonitor='xrandr --output DP-1 --scale 0.7x0.7 --fb 4608x1512 --output DP-2 --pos 2688x432'
 
