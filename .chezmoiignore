@@ -4,5 +4,6 @@ LICENSE
 .hushlogin
 .local/share/bash-completion
 bin/update-nerd-fonts.sh
+bin/update-manual-packages.sh
 {{ end }}
 
