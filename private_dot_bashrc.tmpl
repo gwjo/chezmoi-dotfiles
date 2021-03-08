@@ -149,6 +149,11 @@ refresh ()             { source ~/.bashrc; }
 refresh-functions
 refresh-completions
 
+# public IP address
+public_ip() {
+  curl ifconfig.co
+}
+
 
 ##
 ##  PROMPT
