@@ -18,10 +18,6 @@ else
     # Colorful LS
     alias ls='ls --color=auto -Fh'
     eval $(dircolors -b "$HOME/.local/share/LS_COLORS")
-  elif \gls --color=auto &>/dev/null ; then
-    # use brew coreutils if present
-    alias ls='gls --color=auto -Fh'
-    eval $(gdircolors -b "$HOME/.local/share/LS_COLORS")
   elif ls -G l &>/dev/null ; then
     # BSD ls
     alias ls='ls -GFh'
