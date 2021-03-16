@@ -17,6 +17,12 @@ Host github.com gist.github.com *.githubusercontent.com
 Host *.gwjo.dev
     User gowen
     IdentityFile ~/.ssh/id_ed25519.homelab
+
+# Unifi devices
+Host Entry.gwjo.dev Bedroom.gwjo.dev LivingRoom.gwjo.dev Office.gwjo.dev Laundry.gwjo.dev
+    User gwjo
+    IdentityFile ~/.ssh/id_rsa.unifi
+
 {{- end }}
 
 {{ if .is.work }}
