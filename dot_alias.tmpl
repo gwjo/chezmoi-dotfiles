@@ -33,9 +33,6 @@ else
   alias llt='ls -alrt'
 fi
 
-alias resizemonitor='xrandr --output DP-1 --scale 0.7x0.7 --fb 4608x1512 --output DP-2 --pos 2688x432'
-
-alias 'zoom-camera'='v4l2-ctl -d /dev/video4 -c zoom_absolute=200'
 
 ##
 ## Docker
@@ -53,6 +50,14 @@ alias drmd='docker rmi $(docker images -f "dangling=true" -q)'
 ##
 
 ## {{- if eq .chezmoi.os "linux" }}
+
+# Laptop on left, main monitor zoomed in
+alias resizemonitor='xrandr --output DP-1 --scale 0.7x0.7 --fb 4608x1512'
+
+# Latop on right, main monitor zoomed in
+alias oldresizemonitor='xrandr --output DP-1 --scale 0.7x0.7 --fb 4608x1512 --output DP-2 --pos 2688x432'
+
+alias 'zoom-camera'='v4l2-ctl -d /dev/video4 -c zoom_absolute=200'
 
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
