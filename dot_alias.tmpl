@@ -62,5 +62,10 @@ alias 'zoom-camera'='v4l2-ctl -d /dev/video4 -c zoom_absolute=200'
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
 
+set_idle_minutes() {
+  local minutes=${1:-60}
+  gsettings set org.gnome.desktop.session idle-delay $((60*$minutes))
+}
+
 ## {{- end }}
 
