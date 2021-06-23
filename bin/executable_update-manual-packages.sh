@@ -7,7 +7,7 @@ set -euo pipefail
 
 github_latest_release() {
   local extra=()
-  if [[ -n $GITHUB_ACCESS_TOKEN ]] ; then
+  if [[ -n ${GITHUB_ACCESS_TOKEN-} ]] ; then
     extra=(-u gwjo:$GITHUB_ACCESS_TOKEN)
   fi
   curl ${extra[@]} -LsS "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
@@ -84,14 +84,13 @@ install_exa() {
 
     local tmp=$(mktemp -d)
 
-    # Drop "v" from version string in the file name
-    curl -LsS "$(github_release_dir "$repo" "$version")/exa-linux-x86_64-${version:1}.zip" -o "$tmp/exa.zip"
-    unzip -p "$tmp/exa.zip"  | sudo tee /usr/local/bin/exa >/dev/null
+    curl -LsS "$(github_release_dir "$repo" "$version")/exa-linux-x86_64-${version}.zip" -o "$tmp/exa.zip"
+    unzip -p "$tmp/exa.zip" bin/exa | sudo tee /usr/local/bin/exa >/dev/null
     sudo chmod +x /usr/local/bin/exa
-    rm -rf "$tmp"
 
-    sudo curl -LsS "$(github_raw_dir "$repo" "$version")/contrib/completions.bash" -o ~/.local/share/bash-completion/completions/exa
-    sudo curl -LsS "$(github_raw_dir "$repo" "$version")/contrib/man/exa.1" -o /usr/local/share/man/man1/exa.1
+    unzip -p "$tmp/exa.zip" completions/exa.bash | tee ~/.local/share/bash-completion/completions/exa.bash
+    unzip -p "$tmp/exa.zip" man/exa.1 | sudo tee /usr/local/share/man/man1/exa.1
+    rm -rf "$tmp"
   fi
 
   printf "exa \t\t${version:1} \t(${installed:5})\n"
@@ -143,8 +142,16 @@ install_zoxide() {
 
   if [[ "${version:1}" != "${installed:8}"
         && -n $version ]] ; then
-    sudo curl -LsS "$(github_release_dir "$repo" "$version")/zoxide-x86_64-unknown-linux-musl" -o "/usr/local/bin/zoxide"
+
+    local tmp=$(mktemp -d)
+    local tar="$tmp/zoxide.tar.gz"
+    local bin="zoxide-x86_64-unknown-linux-musl/zoxide"
+
+    curl -LsS "$(github_release_dir "$repo" "$version")/zoxide-x86_64-unknown-linux-musl.tar.gz" -o "$tar"
+    tar xzf "$tar" "$bin" -O | sudo tee /usr/local/bin/zoxide >/dev/null
     sudo chmod +x /usr/local/bin/zoxide
+
+    rm -rf "$tmp"
   fi
 
   printf "zoxide \t\t${version:1}\t(${installed:8})\n"
