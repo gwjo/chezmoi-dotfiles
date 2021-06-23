@@ -1,13 +1,11 @@
-{{- $git_email := "gwjo@users.noreply.github.com" -}}
+{{- $home := promptBool "Is this a home machine (y/n)" -}}
+{{- $work_email := promptString "Work email" -}}
 
-{{- $use_github := promptBool "Use github as default" -}}
-{{- if not $use_github -}}
-{{- $git_email := promptString "git default email" -}}
+{{- $git_email := "gwjo@users.noreply.github.com" -}}
+{{- if not $home -}}
+{{-   $git_email = $work_email -}}
 {{- end -}}
 
-{{- $home := promptBool "home machine" -}}
-
-{{- $work_email := promptString "Work email" -}}
 
 [data]
     is.home = {{ $home }}
